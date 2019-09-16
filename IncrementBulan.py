@@ -1,6 +1,7 @@
 import pandas as pd
 import datetime
 import calendar
+from Peramalan import hasilperamalan
 
 data = pd.read_excel(r'/Users/macbookpro/Desktop/Penjualan.xlsx')
 
@@ -17,4 +18,4 @@ def pecahBulan(ramalan):
     object = data.append({'Bulan' : increment,'Penjualan':ramalan},1)
     return object
 
-print (pecahBulan(100))
+print (pecahBulan(hasilperamalan))

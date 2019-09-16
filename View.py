@@ -6,7 +6,7 @@ import pandas as pd
 
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
-import uji as u
+import Peramalan as u
 
 
 x = []
