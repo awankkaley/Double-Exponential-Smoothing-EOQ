@@ -14,20 +14,19 @@ def peramalan(data, alpha):
     xt = data.Penjualan
     p1 = [xt[0]]
     for n in range(1, len(xt)):
-        p1.append(alpha * xt[n] + (1 - alpha) * p1[n - 1])
+        p1.append((alpha * xt[n]) + ((1 - alpha) * p1[n - 1]))
     p2 = [xt[0]]
     for n in range(1, len(xt)):
         p2.append(alpha * p1[n] + (1 - alpha) * p2[n - 1])
-    at = [p1[0]]
+    at = [xt[0]]
     for n in range(1, len(p1)):
         at.append((2 * p1[n]) - p2[n])
-    bt = [p1[0]]
+    bt = [0]
     for n in range(1, len(p1)):
         bt.append((alpha / (1 - alpha)) * (p1[n] - p2[n]))
-    hasil = [0, bt[0]]
+    hasil = [0]
     for n in range(1, len(at)):
-        hasil.append(at[n] + bt[n])
-    hasil.__delitem__(len(hasil) - 1)
+        hasil.append(at[n-1] + bt[n-1])
     return hasil
 
 # PERAMALAN Pertama
@@ -39,15 +38,15 @@ def peramalanPertama(data, alpha):
     p2 = [xt[0]]
     for n in range(1, len(xt)):
         p2.append(alpha * p1[n] + (1 - alpha) * p2[n - 1])
-    at = [p1[0]]
+    at = [xt[0]]
     for n in range(1, len(p1)):
         at.append((2 * p1[n]) - p2[n])
-    bt = [p1[0]]
+    bt = [0]
     for n in range(1, len(p1)):
         bt.append((alpha / (1 - alpha)) * (p1[n] - p2[n]))
-    hasil = [0, bt[0]]
-    for n in range(1, len(at)):
-        hasil.append(at[n] + bt[n])
+    hasil = [0]
+    for n in range(1, len(at)+1):
+        hasil.append(at[n-1] + bt[n-1])
     return hasil[len(hasil)-1]
 
 
@@ -59,6 +58,7 @@ def PE(data, alpha):
     for n in range(1, len(ft)):
         pe.append(float(abs((xt[n] - ft[n]) / xt[n]) * 100))
     return pe
+
 def cariMAPE(data):
     alpha = 0.00
     datajadi = statistics.mean(PE(data, 0.01))
@@ -68,6 +68,7 @@ def cariMAPE(data):
             alpha = n
             datajadi = hasil  # overidedataPE
     return alpha
+
 def daftarMAPE(data):
     hasil = []
     alpha = []
@@ -90,7 +91,7 @@ listpe = daftarMAPE(data)
 frameramalan = [xt, ft]
 dataSetRamalan = pd.DataFrame(frameramalan)
 
-# print (peramalanPertama(data,cariMAPE(data)))
-cetakListMape(listpe.Hasil,listpe.Alpha)
-cetakGrafikPenjualan(data)
-cetakGrafikRamalan(data,ft)
+
+# cetakListMape(listpe.Hasil,listpe.Alpha)
+# cetakGrafikPenjualan(data)
+# cetakGrafikRamalan(data,ft)
