@@ -6,8 +6,8 @@ from Grafik import cetakGrafikPenjualan
 from Grafik import cetakGrafikRamalan
 from Grafik import cetakListMape
 
-data = pd.read_excel(r'/Users/macbookpro/Desktop/Penjualan.xlsx')
-
+data = pd.read_excel(r'D:\AWANK FILE\SKRIPSI\Master Skripsi\Penjualan.xlsx')
+# data = pd.read_excel(r'/Users/macbookpro/Desktop/Penjualan.xlsx')
 
 # PERAMALAN CODE
 def peramalan(data, alpha):
@@ -48,7 +48,6 @@ def peramalanPertama(data, alpha):
     for n in range(1, len(at)+1):
         hasil.append(at[n-1] + bt[n-1])
     return hasil[len(hasil)-1]
-
 
 # HITUNG MAPE
 def PE(data, alpha):
