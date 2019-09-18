@@ -1,5 +1,8 @@
-from Tkinter import *
-import Tkinter, Tkconstants, tkFileDialog
+# from Tkinter import *
+# import Tkinter, Tkconstants, tkFileDialog
+from tkinter import *
+from tkinter import filedialog
+
 import matplotlib
 # from Tkinter import
 import pandas as pd
@@ -41,7 +44,8 @@ class Plot:
         self.adaFile.grid(row=4, column=1)
 
     def choose_file(self):
-        file_name = tkFileDialog.askopenfilename()
+        # file_name = tkFileDialog.askopenfilename()
+        file_name = filedialog.askopenfilename()
         if not file_name:
             return
         hasil = pd.read_excel(file_name)
