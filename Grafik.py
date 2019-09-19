@@ -5,18 +5,20 @@ import matplotlib.pyplot as plt
 
 
 # DATA PENJUALAN
-def cetakGrafikPenjualan(data):
-    plt.plot(data.Bulan, data.Penjualan)
-    plt.scatter(data.Bulan, data.Penjualan)
+def cetakGrafikPenjualan(bulan,penjualan):
+    plt.plot(bulan, penjualan)
+    plt.scatter(bulan, penjualan)
     plt.ylabel('Periode')
     plt.xlabel('Qty')
     plt.show()
 
 
 # PERBANDINGAN XT FT
-def cetakGrafikRamalan(data, ft):
-    plt.plot(data.Bulan, data.Penjualan)
-    plt.plot(data.Bulan, ft)
+def cetakGrafikRamalan(bulan,penjualan, ft):
+    plt.plot(bulan, penjualan)
+    plt.plot(bulan, ft)
+    plt.scatter(bulan, penjualan)
+    plt.scatter(bulan, ft)
     plt.legend(['penjualan', 'ramalan'])
     plt.ylabel('Periode')
     plt.xlabel('Qty')

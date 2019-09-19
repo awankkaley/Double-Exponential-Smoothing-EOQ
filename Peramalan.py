@@ -90,7 +90,7 @@ listpe = daftarMAPE(data)
 frameramalan = [xt, ft]
 dataSetRamalan = pd.DataFrame(frameramalan)
 
-
-# cetakListMape(listpe.Hasil,listpe.Alpha)
-# cetakGrafikPenjualan(data)
-# cetakGrafikRamalan(data,ft)
+#
+# cetakmape = cetakListMape(listpe.Hasil,listpe.Alpha)
+# cetakpenjualan = cetakGrafikPenjualan(data)
+# cetakramalan = cetakGrafikRamalan(data,ft)
