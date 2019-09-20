@@ -12,7 +12,6 @@ def cetakGrafikPenjualan(bulan,penjualan):
     plt.xlabel('Qty')
     plt.show()
 
-
 # PERBANDINGAN XT FT
 def cetakGrafikRamalan(bulan,penjualan, ft):
     plt.plot(bulan, penjualan)
@@ -24,10 +23,10 @@ def cetakGrafikRamalan(bulan,penjualan, ft):
     plt.xlabel('Qty')
     plt.show()
 
-
 # MAPE LIST
 def cetakListMape(mape, alpha):
     plt.plot(alpha, mape)
+    plt.scatter(alpha,mape)
     plt.ylabel('MAPE')
     plt.xlabel('Alphe')
     plt.show()

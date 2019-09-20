@@ -6,7 +6,7 @@ from Grafik import cetakGrafikPenjualan
 from Grafik import cetakGrafikRamalan
 from Grafik import cetakListMape
 
-data = pd.read_excel(r'D:\AWANK FILE\SKRIPSI\Master Skripsi\Penjualan.xlsx')
+# data = pd.read_excel(r'D:\AWANK FILE\SKRIPSI\Master Skripsi\Penjualan.xlsx')
 # data = pd.read_excel(r'/Users/macbookpro/Desktop/Penjualan.xlsx')
 
 # PERAMALAN CODE
@@ -81,14 +81,14 @@ def daftarMAPE(data):
     return dfmape
 
 
-xt = data.Penjualan.values.tolist()
-ft = peramalan(data, cariMAPE(data))
-pe = PE(data, cariMAPE(data))
-hasilperamalan = peramalanPertama(data,cariMAPE(data))
-listpe = daftarMAPE(data)
-
-frameramalan = [xt, ft]
-dataSetRamalan = pd.DataFrame(frameramalan)
+# xt = data.Penjualan.values.tolist()
+# ft = peramalan(data, cariMAPE(data))
+# pe = PE(data, cariMAPE(data))
+# hasilperamalan = peramalanPertama(data,cariMAPE(data))
+# listpe = daftarMAPE(data)
+#
+# frameramalan = [xt, ft]
+# dataSetRamalan = pd.DataFrame(frameramalan)
 
 #
 # cetakmape = cetakListMape(listpe.Hasil,listpe.Alpha)
