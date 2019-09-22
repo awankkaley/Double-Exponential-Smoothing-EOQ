@@ -1,10 +1,7 @@
 import pandas as pd
-import matplotlib
 import numpy as np
 import statistics
-from Grafik import cetakGrafikPenjualan
-from Grafik import cetakGrafikRamalan
-from Grafik import cetakListMape
+
 
 # data = pd.read_excel(r'D:\AWANK FILE\SKRIPSI\Master Skripsi\Penjualan.xlsx')
 # data = pd.read_excel(r'/Users/macbookpro/Desktop/Penjualan.xlsx')

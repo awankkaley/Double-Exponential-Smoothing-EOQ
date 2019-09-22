@@ -1,7 +1,7 @@
-from Tkinter import *
-import Tkinter, Tkconstants, tkFileDialog, tkMessageBox
-# from tkinter import *
-# from tkinter import filedialog, messagebox
+# from Tkinter import *
+# import Tkinter, Tkconstants, tkFileDialog, tkMessageBox
+from tkinter import *
+from tkinter import filedialog, messagebox
 import matplotlib
 # from Tkinter import
 import pandas as pd
@@ -13,11 +13,7 @@ import Peramalan as u
 from Grafik import cetakGrafikRamalan, cetakGrafikPenjualan, cetakListMape
 import TabelPenjualan
 import TabelRamalan
-
-x = []  # Bulan
-y = []  # Penjualan
-z = []  # PE
-
+import TabelMape
 
 class Plot:
     path = ''
@@ -50,7 +46,7 @@ class Plot:
         self.lineGraph.grid(row=5, column=1, ipadx=10)
         self.graph_forecast = Button(self.master, text="Tabel Ramalan", command=self.tabel_ramalan)
         self.graph_forecast.grid(row=5, column=2, ipadx=15)
-        self.graph_mape = Button(self.master, text="Tabel MAPE", command=self.grafik_mape)
+        self.graph_mape = Button(self.master, text="Tabel MAPE", command=self.tabel_mape)
         self.graph_mape.grid(row=5, column=3, ipadx=10, padx=10)
 
         self.labelAlpha = Label(self.master, text="Alpha Optimal: 0.00", justify=LEFT, anchor=E)
@@ -68,18 +64,15 @@ class Plot:
 
     def pilih_file(self):
         # file_name = tkFileDialog.askopenfilename()
-        file_name = tkFileDialog.askopenfilename()
+        file_name = filedialog.askopenfilename()
         if not file_name:
             return
         hasil = pd.read_excel(file_name)
         dataBulan = hasil.Bulan
         dataPenjualan = hasil.Penjualan
         if len(dataPenjualan)<6:
-            tkMessageBox.showerror('Peringatan','Data Tidak Mencukupi !')
+            messagebox.showerror('Peringatan','Data Tidak Mencukupi !')
         self.path = file_name
-        x.append(dataBulan)
-        y.append(dataPenjualan)
-        z.append(u.peramalan(hasil, u.cariMAPE(hasil)))
         self.adaFile["text"] = file_name
         self.labelAlpha["text"] = 'Alpha : ' + str(u.cariMAPE(hasil))
         self.labelHasil["text"] = "Hasil Ramalan : " + str(int(u.peramalanPertama(hasil, u.cariMAPE(hasil))))
@@ -88,36 +81,48 @@ class Plot:
 
     def grafik_penjualan(self):
         if self.adaFile["text"] == "File belum ada":
-            tkMessageBox.showerror("Perhatian", "Harap Masukan Data Anda  !")
+            messagebox.showerror("Perhatian", "Harap Masukan Data Anda  !")
         else:
-            cetakGrafikPenjualan(x, y)
+            hasil = pd.read_excel(self.path)
+            cetakGrafikPenjualan(hasil.Bulan,hasil.Penjualan)
 
     def grafik_ramalan(self):
         if self.adaFile["text"] == "File belum ada":
-            tkMessageBox.showerror("Perhatian", "Harap Masukan Data Anda  !")
+            messagebox.showerror("Perhatian", "Harap Masukan Data Anda  !")
         else:
-            cetakGrafikRamalan(x, y, z)
+            hasil = pd.read_excel(self.path)
+            ramalan = u.peramalan(hasil, u.cariMAPE(hasil))
+            cetakGrafikRamalan(hasil.Bulan, hasil.Penjualan, ramalan)
 
     def grafik_mape(self):
         if self.adaFile["text"] == "File belum ada":
-            tkMessageBox.showerror("Perhatian", "Harap Masukan Data Anda  !")
+            messagebox.showerror("Perhatian", "Harap Masukan Data Anda  !")
         else:
             hasil = pd.read_excel(self.path)
             cetakListMape(u.daftarMAPE(hasil).Hasil, u.daftarMAPE(hasil).Alpha)
 
     def tabel_penjualan(self):
         if self.adaFile["text"] == "File belum ada":
-            tkMessageBox.showerror("Perhatian", "Harap Masukan Data Anda  !")
+            messagebox.showerror("Perhatian", "Harap Masukan Data Anda  !")
         else:
             hasil = pd.read_excel(self.path)
             TabelPenjualan.main(hasil)
 
     def tabel_ramalan(self):
         if self.adaFile["text"] == "File belum ada":
-            tkMessageBox.showerror("Perhatian", "Harap Masukan Data Anda  !")
+            messagebox.showerror("Perhatian", "Harap Masukan Data Anda  !")
         else:
             hasil = pd.read_excel(self.path)
-            TabelRamalan.main(hasil,z)
+            ramalan = u.peramalan(hasil, u.cariMAPE(hasil))
+            TabelRamalan.main(hasil,ramalan)
+
+    def tabel_mape(self):
+        if self.adaFile["text"] == "File belum ada":
+            messagebox.showerror("Perhatian", "Harap Masukan Data Anda  !")
+        else:
+            hasil = pd.read_excel(self.path)
+            daftarmape = u.daftarMAPE(hasil)
+            TabelMape.main(daftarmape)
 
 def main():
     root_window = Tk()
