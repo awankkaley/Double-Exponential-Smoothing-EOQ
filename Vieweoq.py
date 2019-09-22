@@ -35,38 +35,41 @@ class Plot:
         self.txt = Label(self.master, text="*.xlxx", anchor=W)
         self.txt.grid(row=2, column=3, ipadx=20)
         self.adaFile = Label(self.master, text="File belum ada")
-        self.adaFile.grid(row=3, column=1, columnspan=4, pady=15)
-
-        self.labelpermintaan = Label(self.master, text="Permintaan (Qty) : ", anchor=E, justify=LEFT)
-        self.labelpermintaan.grid(row=4, column=0)
-        self.permintaan = Label(self.master, text=str(data), anchor=E, justify=LEFT)
-        self.permintaan.grid(row=4, column=1)
-
-        self.labelongkir = Label(self.master, text="Biaya Pesan (Rp) : ", anchor=E, justify=LEFT)
-        self.labelongkir.grid(row=5, column=0)
-        self.ongkir = Entry(self.master, width=10)
-        self.ongkir.grid(row=5, column=1)
-
-        self.labelgudang = Label(self.master, text="Biaya Gudang (%) : ", anchor=E, justify=LEFT)
-        self.labelgudang.grid(row=6, column=0)
-        self.gudang = Entry(self.master, width=10)
-        self.gudang.grid(row=6, column=1)
-
-        self.labelharikerja = Label(self.master, text="Hari Kerja (Hari) : ", anchor=E, justify=LEFT)
-        self.labelharikerja.grid(row=4, column=2)
-        self.harikerja = Entry(self.master, width=10)
-        self.harikerja.grid(row=4, column=3, padx=20)
-
-        self.labelleadtime = Label(self.master, text="Lead Time (Hari) : ", anchor=E, justify=LEFT)
-        self.labelleadtime.grid(row=5, column=2)
-        self.leadtime = Entry(self.master, width=10)
-        self.leadtime.grid(row=5, column=3)
-
-        self.tombol_proses = Button(self.master, text="Proses", command=self.grafik_penjualan, bg='green', width='10')
-        self.tombol_proses.grid(row=6, column=3)
+        self.adaFile.grid(row=3, column=1, columnspan=4)
 
         self._separator = ttk.Separator(self.master, orient="horizontal")
-        self._separator.grid(row=7,column=0,columnspan=4, sticky="we", pady=20)
+        self._separator.grid(row=4,column=0,columnspan=4, sticky="we")
+
+        self.labelpermintaan = Label(self.master, text="Permintaan (Qty) : ", anchor=E, justify=LEFT)
+        self.labelpermintaan.grid(row=5, column=0)
+        self.permintaan = Label(self.master, text=str(data), anchor=E, justify=LEFT)
+        self.permintaan.grid(row=5, column=1)
+
+        self.labelongkir = Label(self.master, text="Biaya Pesan (Rp) : ", anchor=E, justify=LEFT)
+        self.labelongkir.grid(row=6, column=0)
+        self.ongkir = Entry(self.master, width=10)
+        self.ongkir.grid(row=6, column=1)
+
+        self.labelgudang = Label(self.master, text="Biaya Gudang (%) : ", anchor=E, justify=LEFT)
+        self.labelgudang.grid(row=7, column=0)
+        self.gudang = Entry(self.master, width=10)
+        self.gudang.grid(row=7, column=1)
+
+        self.labelharikerja = Label(self.master, text="Hari Kerja (Hari) : ", anchor=E, justify=LEFT)
+        self.labelharikerja.grid(row=5, column=2)
+        self.harikerja = Entry(self.master, width=10)
+        self.harikerja.grid(row=5, column=3, padx=20)
+
+        self.labelleadtime = Label(self.master, text="Lead Time (Hari) : ", anchor=E, justify=LEFT)
+        self.labelleadtime.grid(row=6, column=2)
+        self.leadtime = Entry(self.master, width=10)
+        self.leadtime.grid(row=6, column=3)
+
+        self.tombol_proses = Button(self.master, text="Proses", command=self.grafik_penjualan, bg='green', width='10')
+        self.tombol_proses.grid(row=7, column=3)
+
+        self._separator = ttk.Separator(self.master, orient="horizontal")
+        self._separator.grid(row=8,column=0,columnspan=4, sticky="we", pady=20)
 
 
     def pilih_file(self):
