@@ -18,9 +18,7 @@ class TabelPenjualan(Tkinter.Frame):
         self.initialize_user_interface()
 
     def initialize_user_interface(self):
-        self.parent.title("Canvas Test")
-        self.parent.grid_rowconfigure(0, weight=1)
-        self.parent.grid_columnconfigure(0, weight=1)
+        self.parent.title("Ramalan")
         self.parent.config(background="lavender")
 
         # Set the treeview
