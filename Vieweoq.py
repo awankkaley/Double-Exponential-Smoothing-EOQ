@@ -27,18 +27,18 @@ class Plot:
         self.judul = Label(self.master, text="ECONOMIC ORDER QUANTITY", font="Helvetica 16 bold")
         self.judul.grid(row=0, column=0, columnspan=34, ipady=15)
         self._separator = ttk.Separator(self.master, orient="horizontal")
-        self._separator.grid(row=1,column=0,columnspan=4, sticky="we")
-        self.label1 = Label(self.master, text="Pilih File: ", anchor=E, justify=RIGHT)
+        self._separator.grid(row=1, column=0, columnspan=4, sticky="we")
+        self.label1 = Label(self.master, text="Pilih File: ", anchor=CENTER, justify=LEFT)
         self.chooseFile = Button(self.master, text="Browse", command=self.pilih_file)
-        self.label1.grid(row=2, column=1, ipadx=20,pady=15)
+        self.label1.grid(row=2, column=1, ipadx=20, pady=15)
         self.chooseFile.grid(row=2, column=2, ipadx=20)
         self.txt = Label(self.master, text="*.xlxx", anchor=W)
         self.txt.grid(row=2, column=3, ipadx=20)
-        self.adaFile = Label(self.master, text="File belum ada")
+        self.adaFile = Label(self.master, text="File belum ada", anchor=W, justify=CENTER)
         self.adaFile.grid(row=3, column=1, columnspan=4)
 
         self._separator = ttk.Separator(self.master, orient="horizontal")
-        self._separator.grid(row=4,column=0,columnspan=4, sticky="we")
+        self._separator.grid(row=4, column=0, columnspan=4, sticky="we")
 
         self.labelpermintaan = Label(self.master, text="Permintaan (Qty) : ", anchor=E, justify=LEFT)
         self.labelpermintaan.grid(row=5, column=0)
@@ -69,8 +69,7 @@ class Plot:
         self.tombol_proses.grid(row=7, column=3)
 
         self._separator = ttk.Separator(self.master, orient="horizontal")
-        self._separator.grid(row=8,column=0,columnspan=4, sticky="we", pady=20)
-
+        self._separator.grid(row=8, column=0, columnspan=4, sticky="we", pady=20)
 
     def pilih_file(self):
         # file_name = tkFileDialog.askopenfilename()
