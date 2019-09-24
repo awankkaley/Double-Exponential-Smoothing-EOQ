@@ -1,22 +1,26 @@
-from Tkinter import *
-import Tkinter, Tkconstants, tkFileDialog, tkMessageBox
-# from tkinter import *
-# from tkinter import filedialog, messagebox
-# import tkinter.ttk as ttk
-import matplotlib
-import ttk
-# from Tkinter import
+
+try:
+    from Tkinter import *
+    import Tkinter, Tkconstants, tkFileDialog, tkMessageBox
+    import ttk
+except ImportError:
+    from tkinter import filedialog as tkFileDialog
+    from tkinter import messagebox as tkMessageBox
+    from tkinter import *
+    import tkinter.ttk as ttk
+
 import pandas as pd
 import statistics
-
+import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
+
 import Peramalan as u
 from Grafik import cetakGrafikRamalan, cetakGrafikPenjualan, cetakListMape
 import TabelPenjualan
 import TabelRamalan
 import TabelMape
-import Vieweoq
+from Vieweoq import main as pindah_eoq
 
 
 class Plot:
@@ -136,7 +140,7 @@ class Plot:
             tkMessageBox.showerror("Perhatian", "Harap Masukan Data Anda  !")
         else:
             hasil = pd.read_excel(self.path)
-            Vieweoq.main(str(int(u.peramalanPertama(hasil, u.cariMAPE(hasil)))))
+            pindah_eoq(str(int(u.peramalanPertama(hasil, u.cariMAPE(hasil)))))
 
 
 def main():
