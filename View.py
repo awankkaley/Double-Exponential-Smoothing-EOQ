@@ -140,7 +140,8 @@ class Plot:
             tkMessageBox.showerror("Perhatian", "Harap Masukan Data Anda  !")
         else:
             hasil = pd.read_excel(self.path)
-            pindah_eoq(str(int(u.peramalanPertama(hasil, u.cariMAPE(hasil)))))
+
+            pindah_eoq(u.peramalanPertama(hasil, u.cariMAPE(hasil)),hasil)
 
 
 def main():

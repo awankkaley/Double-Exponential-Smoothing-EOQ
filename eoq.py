@@ -6,7 +6,7 @@ import statistics as st
 # dataeoq = pd.read_excel(r'D:\AWANK FILE\SKRIPSI\Master Skripsi\EOQ.xlsx')
 dataeoq = pd.read_excel(r'/Users/macbookpro/Desktop/EOQ.xlsx')
 
-# D = round(peramalanPertama(data,cariMAPE(data))) #Permintaan
+D = round(peramalanPertama(data,cariMAPE(data))) #Permintaan
 S = 300000 #ongkir
 biayaduang = 0.1
 harikerja = 26
