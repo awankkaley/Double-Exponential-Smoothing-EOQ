@@ -16,7 +16,7 @@ import statistics
 class Plot:
     path = ''
 
-    def __init__(self, master, data,peramalan):
+    def __init__(self, master, data, peramalan):
         self.ttk = ttk
         self.master = master
         self.master.title("Economic Order Quantity")
@@ -24,7 +24,7 @@ class Plot:
         # self.master.maxsize(550, 280)
 
         self.judul = Label(self.master, text="ECONOMIC ORDER QUANTITY", font="Helvetica 16 bold")
-        self.judul.grid(row=0, column=0, columnspan=34, ipady=15)
+        self.judul.grid(row=0, column=0, columnspan=4, ipady=15)
         self._separator = ttk.Separator(self.master, orient="horizontal")
         self._separator.grid(row=1, column=0, columnspan=4, sticky="we")
         self.label1 = Label(self.master, text="Pilih File: ", anchor=CENTER, justify=LEFT)
@@ -59,21 +59,62 @@ class Plot:
         self.labelharikerja = Label(self.master, text="Hari Kerja (Hari) : ", anchor=E, justify=LEFT)
         self.labelharikerja.grid(row=5, column=2)
         self.harikerja_id = StringVar()
-        self.harikerja = Entry(self.master,textvariable=self.harikerja_id, width=10)
+        self.harikerja = Entry(self.master, textvariable=self.harikerja_id, width=10)
         self.harikerja.grid(row=5, column=3, padx=20)
 
         self.labelleadtime = Label(self.master, text="Lead Time (Hari) : ", anchor=E, justify=LEFT)
         self.labelleadtime.grid(row=6, column=2)
         self.leadtime_id = StringVar()
-        self.leadtime = Entry(self.master,textvariable=self.leadtime_id, width=10)
+        self.leadtime = Entry(self.master, textvariable=self.leadtime_id, width=10)
         self.leadtime.grid(row=6, column=3)
 
-        self.tombol_proses = Button(self.master, text="Proses", command=lambda: self.proses(data,peramalan), bg='green',
+        self.tombol_proses = Button(self.master, text="Proses", command=lambda: self.proses(data, peramalan),
+                                    bg='green',
                                     width='10')
         self.tombol_proses.grid(row=7, column=3)
 
         self._separator = ttk.Separator(self.master, orient="horizontal")
-        self._separator.grid(row=8, column=0, columnspan=4, sticky="we", pady=20)
+        self._separator.grid(row=8, column=0, columnspan=4, sticky="we", pady=10)
+
+        self.judulhasil = Label(self.master, text="HASIL", font="Helvetica 11 bold")
+        self.judulhasil.grid(row=9, column=0, columnspan=4)
+
+        self.detaileoq = Label(self.master, text="Detail EOQ/TAC : ", anchor=E, justify=LEFT)
+        self.detaileoq.grid(row=10, column=0)
+        self.tombol_lihat = Button(self.master, text="Lihat", command=self.lihatdetaileoq(),
+                                   width='10')
+        self.tombol_lihat.grid(row=10, column=1)
+
+        self.judul_eoqoptimal = Label(self.master, text="EOQ Optimal : ", anchor=E, justify=LEFT)
+        self.judul_eoqoptimal.grid(row=11, column=0)
+        self.hasil_eoqoptimal = Label(self.master, text="-", anchor=E, justify=LEFT)
+        self.hasil_eoqoptimal.grid(row=11, column=1)
+
+        self.judul_penggunaanharian = Label(self.master, text="Penggunaan/hari : ", anchor=E, justify=LEFT)
+        self.judul_penggunaanharian.grid(row=12, column=0)
+        self.hasil_penggunaanharian = Label(self.master, text="-", anchor=E, justify=LEFT)
+        self.hasil_penggunaanharian.grid(row=12, column=1)
+
+        self.judul_penggunaanleadtime = Label(self.master, text="Penggunaan/leadtime : ", anchor=E, justify=LEFT)
+        self.judul_penggunaanleadtime.grid(row=13, column=0)
+        self.hasil_penggunaanleadtime = Label(self.master, text="-", anchor=E, justify=LEFT)
+        self.hasil_penggunaanleadtime.grid(row=13, column=1)
+
+        self.judul_frekuensi = Label(self.master, text="Frekuensi : ", anchor=E, justify=LEFT)
+        self.judul_frekuensi.grid(row=10, column=2)
+        self.hasil_frekuensi = Label(self.master, text="-", anchor=E, justify=LEFT)
+        self.hasil_frekuensi.grid(row=10, column=3)
+
+        self.judul_jarak = Label(self.master, text="Jarak Order (hari) : ", anchor=E, justify=LEFT)
+        self.judul_jarak.grid(row=11, column=2)
+        self.hasil_jarak = Label(self.master, text="-", anchor=E, justify=LEFT)
+        self.hasil_jarak.grid(row=11, column=3)
+
+        self.judul_rop = Label(self.master, text="Reorder Point : ", anchor=E, justify=LEFT)
+        self.judul_rop.grid(row=12, column=2)
+        self.hasil_rop = Label(self.master, text="-", anchor=E, justify=LEFT)
+        self.hasil_rop.grid(row=12, column=3)
+
 
     def pilih_file(self):
         # file_name = tkFileDialog.askopenfilename()
@@ -105,7 +146,8 @@ class Plot:
             def cariTAC():
                 TAC = []
                 for n in range(0, len(eoq_awal())):
-                    hitung = ((dataku / eoq_awal()[n]) * int(self.ongkir.get()) + ((eoq_awal()[n] / 2) * (harga[n] * float(self.gudang.get()))) + (dataku * harga[n]))
+                    hitung = ((dataku / eoq_awal()[n]) * int(self.ongkir.get()) + (
+                            (eoq_awal()[n] / 2) * (harga[n] * float(self.gudang.get()))) + (dataku * harga[n]))
                     TAC.append(hitung)
                 return TAC
 
@@ -117,20 +159,28 @@ class Plot:
                         TAC1 = hitung
                 return MOQ[cariTAC().index(TAC1)]
 
-            penggunaanharian = round(dataku/int(self.harikerja.get()))
-            penggunaanleadtime = round(penggunaanharian*int(self.leadtime.get()))
-            frekuensi = round(dataku/cariEOQ())
-            jarakreorder = round(int(self.harikerja.get())/frekuensi)
-            rop = round(statistics.mean(peramalan.Penjualan)+penggunaanleadtime)
+            penggunaanharian = round(dataku / int(self.harikerja.get()))
+            penggunaanleadtime = round(penggunaanharian * int(self.leadtime.get()))
+            frekuensi = round(dataku / cariEOQ())
+            jarakreorder = round(int(self.harikerja.get()) / frekuensi)
+            rop = round(statistics.mean(peramalan.Penjualan) + penggunaanleadtime)
 
-            print (penggunaanharian)
-            print (penggunaanleadtime)
-            print (frekuensi)
-            print (jarakreorder)
-            print (rop)
+            self.hasil_eoqoptimal["text"] = cariEOQ()
+            self.hasil_penggunaanharian["text"] = penggunaanharian
+            self.hasil_penggunaanleadtime["text"] = penggunaanleadtime
+            self.hasil_frekuensi["text"] = frekuensi
+            self.hasil_jarak["text"] = jarakreorder
+            self.hasil_rop["text"] = rop
+
+    def lihatdetaileoq(self):
+        hasil = "cek"
+        return hasil
 
 
-def main(data,peramalan):
+def main(data, peramalan):
     root_window = Tk()
     program = Plot(root_window, data, peramalan)
     root_window.mainloop()
+
+
+
