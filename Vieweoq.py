@@ -11,10 +11,13 @@ except ImportError:
 import pandas as pd
 import math
 import statistics
-
+import TabelDetailEOQ
 
 class Plot:
     path = ''
+    dataEOQ = []
+    dataTAC = []
+
 
     def __init__(self, master, data, peramalan):
         self.ttk = ttk
@@ -81,7 +84,7 @@ class Plot:
 
         self.detaileoq = Label(self.master, text="Detail EOQ/TAC : ", anchor=E, justify=LEFT)
         self.detaileoq.grid(row=10, column=0)
-        self.tombol_lihat = Button(self.master, text="Lihat", command=self.lihatdetaileoq(),
+        self.tombol_lihat = Button(self.master, text="Lihat", command=self.lihatdetaileoq,
                                    width='10')
         self.tombol_lihat.grid(row=10, column=1)
 
@@ -138,9 +141,11 @@ class Plot:
 
             def eoq_awal():
                 EOQAWAL = math.sqrt((2 * dataku * int(self.ongkir.get())) / (harga[0] * float(self.gudang.get())))
-                hasil = [EOQAWAL]
+                hasil = [round(EOQAWAL)]
+                self.dataEOQ.append(round(EOQAWAL))
                 for n in range(1, len(MOQ)):
                     hasil.append(MOQ[n])
+                    self.dataEOQ.append(MOQ[n])
                 return hasil
 
             def cariTAC():
@@ -148,7 +153,8 @@ class Plot:
                 for n in range(0, len(eoq_awal())):
                     hitung = ((dataku / eoq_awal()[n]) * int(self.ongkir.get()) + (
                             (eoq_awal()[n] / 2) * (harga[n] * float(self.gudang.get()))) + (dataku * harga[n]))
-                    TAC.append(hitung)
+                    TAC.append(round(hitung))
+                    self.dataTAC.append(round(hitung))
                 return TAC
 
             def cariEOQ():
@@ -173,8 +179,8 @@ class Plot:
             self.hasil_rop["text"] = rop
 
     def lihatdetaileoq(self):
-        hasil = "cek"
-        return hasil
+        hasil = pd.read_excel(self.path)
+        TabelDetailEOQ.main(self.dataEOQ,hasil.Harga,self.dataTAC)
 
 
 def main(data, peramalan):
