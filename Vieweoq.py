@@ -138,9 +138,10 @@ class Plot:
             hasil = pd.read_excel(self.path)
             MOQ = hasil.MOQ.values.tolist()
             harga = hasil.Harga.values.tolist()
+            gudang = int(self.gudang.get())/100
 
             def eoq_awal():
-                EOQAWAL = math.sqrt((2 * dataku * int(self.ongkir.get())) / (harga[0] * float(self.gudang.get())))
+                EOQAWAL = math.sqrt((2 * dataku * int(self.ongkir.get())) / (harga[0] * float(gudang)))
                 hasil = [round(EOQAWAL)]
                 self.dataEOQ.append(round(EOQAWAL))
                 for n in range(1, len(MOQ)):
@@ -152,7 +153,7 @@ class Plot:
                 TAC = []
                 for n in range(0, len(eoq_awal())):
                     hitung = ((dataku / eoq_awal()[n]) * int(self.ongkir.get()) + (
-                            (eoq_awal()[n] / 2) * (harga[n] * float(self.gudang.get()))) + (dataku * harga[n]))
+                            (eoq_awal()[n] / 2) * (harga[n] * float(gudang))) + (dataku * harga[n]))
                     TAC.append(round(hitung))
                     self.dataTAC.append(round(hitung))
                 return TAC

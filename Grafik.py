@@ -8,8 +8,8 @@ import matplotlib.pyplot as plt
 def cetakGrafikPenjualan(bulan,penjualan):
     plt.plot(bulan, penjualan)
     plt.scatter(bulan, penjualan)
-    plt.ylabel('Periode')
-    plt.xlabel('Qty')
+    plt.ylabel('Qty')
+    plt.xlabel('Periode')
     plt.show()
 
 # PERBANDINGAN XT FT
@@ -19,8 +19,8 @@ def cetakGrafikRamalan(bulan,penjualan, ft):
     plt.scatter(bulan, penjualan)
     plt.scatter(bulan, ft)
     plt.legend(['penjualan', 'ramalan'])
-    plt.ylabel('Periode')
-    plt.xlabel('Qty')
+    plt.ylabel('Qty')
+    plt.xlabel('Periode')
     plt.show()
 
 # MAPE LIST

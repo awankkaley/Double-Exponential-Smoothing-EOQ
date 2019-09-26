@@ -6,6 +6,7 @@ except ImportError:  # Python 3
     import tkinter as Tkinter
     import tkinter.ttk as ttk
 
+import UbahBulan
 
 class TabelPenjualan(Tkinter.Frame):
 
@@ -38,11 +39,10 @@ class TabelPenjualan(Tkinter.Frame):
     def insert_data(self,data):
         for n in range(0, len(data)):
             self.treeview.insert('', 'end', text=str(self.i),
-                                 values=(data.Bulan[n],
+                                 values=(UbahBulan.ubah(str(data.Bulan[n])),
                                          data.Penjualan[n]))
             # Increment counter
             self.i = self.i + 1
-
 
 def main(data):
     root = Tkinter.Tk()

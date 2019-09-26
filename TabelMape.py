@@ -38,8 +38,8 @@ class TabelPenjualan(Tkinter.Frame):
     def insert_data(self, data):
         for n in range(0, len(data)):
             self.treeview.insert('', 'end', text=str(self.i),
-                                 values=(data.Alpha[n],
-                                         data.Hasil[n]))
+                                 values=(round(data.Alpha[n],2),
+                                         round(data.Hasil[n],2)))
             # Increment counter
             self.i = self.i + 1
 

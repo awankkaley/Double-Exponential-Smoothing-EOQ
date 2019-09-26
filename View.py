@@ -12,6 +12,7 @@ except ImportError:
 import pandas as pd
 import statistics
 import matplotlib
+import IncrementBulan
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 
@@ -86,8 +87,8 @@ class Plot:
         self.path = file_name
         self.adaFile["text"] = file_name
         self.labelAlpha["text"] = 'Alpha : ' + str(u.cariMAPE(hasil))
-        self.labelHasil["text"] = "Hasil Ramalan : " + str(int(u.peramalanPertama(hasil, u.cariMAPE(hasil))))
-        self.labelMape["text"] = "MAPE : " + str(statistics.mean(u.PE(hasil, u.cariMAPE(hasil))))
+        self.labelHasil["text"] = str(IncrementBulan.add_months(hasil.Bulan[len(hasil.Bulan) - 1],1)) +" : " + str(int(u.peramalanPertama(hasil, u.cariMAPE(hasil))))
+        self.labelMape["text"] = "MAPE : " + str(round(statistics.mean(u.PE(hasil, u.cariMAPE(hasil))),2))
         self.labelData["text"] = "Data Uji : " + str(len(hasil))
 
     def grafik_penjualan(self):
