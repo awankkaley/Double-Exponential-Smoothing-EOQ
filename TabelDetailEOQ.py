@@ -6,7 +6,7 @@ except ImportError:  # Python 3
     import tkinter as Tkinter
     import tkinter.ttk as ttk
 
-from money import Money
+import money
 
 class TabelDetailEoq(Tkinter.Frame):
 
@@ -32,7 +32,7 @@ class TabelDetailEoq(Tkinter.Frame):
         self.tree.column('#0', stretch=Tkinter.YES, width=50)
         self.tree.column('#1', width=70,anchor='center')
         self.tree.column('#2', stretch=Tkinter.YES, width=90, anchor='center')
-        self.tree.column('#3', stretch=Tkinter.YES, width=90, anchor='center')
+        self.tree.column('#3', stretch=Tkinter.YES, width=200, anchor='center')
         self.tree.grid(row=4, columnspan=4, sticky='nsew')
         self.treeview = self.tree
         # Initialize the counter
@@ -42,8 +42,8 @@ class TabelDetailEoq(Tkinter.Frame):
 
         for n in range(0, len(dataEoq)):
             self.treeview.insert('', 'end', text=str(self.i),
-                                 values=(dataEoq[n],
-                                         dataHarga[n],Money(dataTAC[n],'IDR')))
+                                 values=(int(dataEoq[n]),
+                                         dataHarga[n],money.Money(dataTAC[n],'IDR')))
             self.i = self.i + 1
 
 

@@ -138,9 +138,10 @@ class Plot:
             hasil = pd.read_excel(self.path)
             MOQ = hasil.MOQ.values.tolist()
             harga = hasil.Harga.values.tolist()
-            gudang = int(self.gudang.get())/100
+            gudang = float(self.gudang.get())/100
 
             def eoq_awal():
+
                 EOQAWAL = math.sqrt((2 * dataku * int(self.ongkir.get())) / (harga[0] * float(gudang)))
                 hasil = [round(EOQAWAL)]
                 self.dataEOQ.append(round(EOQAWAL))

@@ -87,9 +87,10 @@ class Plot:
         self.path = file_name
         self.adaFile["text"] = file_name
         self.labelAlpha["text"] = 'Alpha : ' + str(u.cariMAPE(hasil))
-        self.labelHasil["text"] = str(IncrementBulan.add_months(hasil.Bulan[len(hasil.Bulan) - 1],1)) +" : " + str(int(u.peramalanPertama(hasil, u.cariMAPE(hasil))))
+        self.labelHasil["text"] = str(IncrementBulan.add_months(hasil.Bulan[len(hasil.Bulan) - 1],1)) +" : " + str(round(u.peramalanPertama(hasil, u.cariMAPE(hasil))))
         self.labelMape["text"] = "MAPE : " + str(round(statistics.mean(u.PE(hasil, u.cariMAPE(hasil))),2))
         self.labelData["text"] = "Data Uji : " + str(len(hasil))
+
 
     def grafik_penjualan(self):
         if self.adaFile["text"] == "File belum ada":
