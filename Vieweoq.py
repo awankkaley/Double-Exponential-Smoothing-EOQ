@@ -13,11 +13,11 @@ import math
 import statistics
 import TabelDetailEOQ
 
+
 class Plot:
     path = ''
     dataEOQ = []
     dataTAC = []
-
 
     def __init__(self, master, data, peramalan):
         self.ttk = ttk
@@ -28,16 +28,7 @@ class Plot:
 
         self.judul = Label(self.master, text="ECONOMIC ORDER QUANTITY", font="Helvetica 16 bold")
         self.judul.grid(row=0, column=0, columnspan=4, ipady=15)
-        self._separator = ttk.Separator(self.master, orient="horizontal")
-        self._separator.grid(row=1, column=0, columnspan=4, sticky="we")
-        self.label1 = Label(self.master, text="Pilih File: ", anchor=CENTER, justify=LEFT)
-        self.chooseFile = Button(self.master, text="Browse", command=self.pilih_file)
-        self.label1.grid(row=2, column=1, ipadx=20, pady=15)
-        self.chooseFile.grid(row=2, column=2, ipadx=20)
-        self.txt = Label(self.master, text="*.xlxx", anchor=W)
-        self.txt.grid(row=2, column=3, ipadx=20)
-        self.adaFile = Label(self.master, text="File belum ada", anchor=W, justify=CENTER)
-        self.adaFile.grid(row=3, column=1, columnspan=4)
+
 
         self._separator = ttk.Separator(self.master, orient="horizontal")
         self._separator.grid(row=4, column=0, columnspan=4, sticky="we")
@@ -84,7 +75,7 @@ class Plot:
 
         self.detaileoq = Label(self.master, text="Detail EOQ/TAC : ", anchor=E, justify=LEFT)
         self.detaileoq.grid(row=10, column=0)
-        self.tombol_lihat = Button(self.master, text="Lihat", command=self.lihatdetaileoq,
+        self.tombol_lihat = Button(self.master, text="Lihat", command=lambda :self.lihatdetaileoq(peramalan),
                                    width='10')
         self.tombol_lihat.grid(row=10, column=1)
 
@@ -118,77 +109,57 @@ class Plot:
         self.hasil_rop = Label(self.master, text="-", anchor=E, justify=LEFT)
         self.hasil_rop.grid(row=12, column=3)
 
-
-    def pilih_file(self):
-        # file_name = tkFileDialog.askopenfilename()
-        file_name = tkFileDialog.askopenfilename()
-        if not file_name:
-            return
-        hasil = pd.read_excel(file_name)
-        if len(hasil.MOQ) == 0:
-            tkMessageBox.showerror('Peringatan', 'Data Tidak Mencukupi !')
-        self.path = file_name
-        self.adaFile["text"] = file_name
-
     def proses(self, data, peramalan):
         dataku = round(data)
-        if self.adaFile["text"] == "File belum ada":
-            tkMessageBox.showerror("Perhatian", "Belum Ada Data  !")
-        else:
-            hasil = pd.read_excel(self.path)
-            MOQ = hasil.MOQ.values.tolist()
-            harga = hasil.Harga.values.tolist()
-            gudang = float(self.gudang.get())/100
+        MOQ = peramalan.MOQ.dropna().values.tolist()
+        harga = peramalan.Harga.dropna().values.tolist()
+        gudang = float(self.gudang.get()) / 100
 
-            def eoq_awal():
+        def eoq_awal():
 
-                EOQAWAL = math.sqrt((2 * dataku * int(self.ongkir.get())) / (harga[0] * float(gudang)))
-                hasil = [round(EOQAWAL)]
-                self.dataEOQ.append(round(EOQAWAL))
-                for n in range(1, len(MOQ)):
-                    hasil.append(MOQ[n])
-                    self.dataEOQ.append(MOQ[n])
-                return hasil
+            EOQAWAL = math.sqrt((2 * dataku * int(self.ongkir.get())) / (harga[0] * float(gudang)))
+            hasil = [round(EOQAWAL)]
+            self.dataEOQ.append(round(EOQAWAL))
+            for n in range(1, len(MOQ)):
+                hasil.append(MOQ[n])
+                self.dataEOQ.append(MOQ[n])
+            return hasil
 
-            def cariTAC():
-                TAC = []
-                for n in range(0, len(eoq_awal())):
-                    hitung = ((dataku / eoq_awal()[n]) * int(self.ongkir.get()) + (
+        def cariTAC():
+            TAC = []
+            for n in range(0, len(eoq_awal())):
+                hitung = ((dataku / eoq_awal()[n]) * int(self.ongkir.get()) + (
                             (eoq_awal()[n] / 2) * (harga[n] * float(gudang))) + (dataku * harga[n]))
-                    TAC.append(round(hitung))
-                    self.dataTAC.append(round(hitung))
-                return TAC
+                TAC.append(round(hitung))
+                self.dataTAC.append(round(hitung))
+            return TAC
 
-            def cariEOQ():
-                TAC1 = cariTAC()[0]
-                for n in range(1, len(cariTAC())):
-                    hitung = cariTAC()[n]
-                    if hitung < TAC1:
-                        TAC1 = hitung
-                return MOQ[cariTAC().index(TAC1)]
+        def cariEOQ():
+            TAC1 = cariTAC()[0]
+            for n in range(1, len(cariTAC())):
+                hitung = cariTAC()[n]
+                if hitung < TAC1:
+                    TAC1 = hitung
+            return MOQ[cariTAC().index(TAC1)]
 
-            penggunaanharian = round(dataku / int(self.harikerja.get()))
-            penggunaanleadtime = round(penggunaanharian * int(self.leadtime.get()))
-            frekuensi = round(dataku / cariEOQ())
-            jarakreorder = round(int(self.harikerja.get()) / frekuensi)
-            rop = round(statistics.mean(peramalan.Penjualan) + penggunaanleadtime)
+        penggunaanharian = round(dataku / int(self.harikerja.get()))
+        penggunaanleadtime = round(penggunaanharian * int(self.leadtime.get()))
+        frekuensi = round(dataku / cariEOQ())
+        jarakreorder = round(int(self.harikerja.get()) / frekuensi)
+        rop = round(statistics.mean(peramalan.Penjualan) + penggunaanleadtime)
 
-            self.hasil_eoqoptimal["text"] = cariEOQ()
-            self.hasil_penggunaanharian["text"] = penggunaanharian
-            self.hasil_penggunaanleadtime["text"] = penggunaanleadtime
-            self.hasil_frekuensi["text"] = frekuensi
-            self.hasil_jarak["text"] = jarakreorder
-            self.hasil_rop["text"] = rop
+        self.hasil_eoqoptimal["text"] = cariEOQ()
+        self.hasil_penggunaanharian["text"] = penggunaanharian
+        self.hasil_penggunaanleadtime["text"] = penggunaanleadtime
+        self.hasil_frekuensi["text"] = frekuensi
+        self.hasil_jarak["text"] = jarakreorder
+        self.hasil_rop["text"] = rop
 
-    def lihatdetaileoq(self):
-        hasil = pd.read_excel(self.path)
-        TabelDetailEOQ.main(self.dataEOQ,hasil.Harga,self.dataTAC)
+    def lihatdetaileoq(self,data):
+        TabelDetailEOQ.main(self.dataEOQ, data.Harga.dropna(), self.dataTAC)
 
 
 def main(data, peramalan):
     root_window = Tk()
     program = Plot(root_window, data, peramalan)
     root_window.mainloop()
-
-
-

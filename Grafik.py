@@ -9,6 +9,7 @@ def cetakGrafikPenjualan(bulan,penjualan):
     plt.plot(bulan, penjualan)
     plt.scatter(bulan, penjualan)
     plt.ylabel('Qty')
+    plt.title('Grafik Penjualan')
     plt.xlabel('Periode')
     plt.show()
 
@@ -18,6 +19,7 @@ def cetakGrafikRamalan(bulan,penjualan, ft):
     plt.plot(bulan, ft)
     plt.scatter(bulan, penjualan)
     plt.scatter(bulan, ft)
+    plt.title('Grafik Ramalan')
     plt.legend(['penjualan', 'ramalan'])
     plt.ylabel('Qty')
     plt.xlabel('Periode')
@@ -27,6 +29,7 @@ def cetakGrafikRamalan(bulan,penjualan, ft):
 def cetakListMape(mape, alpha):
     plt.plot(alpha, mape)
     plt.scatter(alpha,mape)
+    plt.title('Grafik MAPE')
     plt.ylabel('MAPE')
     plt.xlabel('Alphe')
     plt.show()
