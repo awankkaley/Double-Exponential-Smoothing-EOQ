@@ -54,13 +54,13 @@ def PE(data, alpha):
     return pe
 
 def cariMAPE(data):
-    alpha = 0.0000
+    alpha = 0.1
     datajadi = float(statistics.mean(PE(data, 0.1)))
     for n in np.arange(0.1, 1, 0.1):
         hasil = float(statistics.mean(PE(data, n)))
         if hasil < datajadi:
             alpha = n
-            datajadi = hasil  # overidedataPE
+            datajadi = hasil
     return alpha
 
 def daftarMAPE(data):
@@ -68,7 +68,6 @@ def daftarMAPE(data):
     alpha = []
     daftar = {'Alpha':alpha,
         'Hasil':hasil}
-    datajadi = statistics.mean(PE(data, 0.1))
     for n in np.arange(0.1, 1, 0.1):
         hasil.append(float(statistics.mean(PE(data, n))))
         alpha.append(n)
