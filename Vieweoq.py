@@ -110,7 +110,7 @@ class Plot:
         self.hasil_rop.grid(row=12, column=3)
 
     def proses(self, data, peramalan):
-        dataku = round(data)
+        dataku = round(int(data))
         MOQ = peramalan.MOQ.dropna().values.tolist()
         harga = peramalan.Harga.dropna().values.tolist()
         gudang = float(self.gudang.get()) / 100
@@ -140,12 +140,13 @@ class Plot:
                 hitung = cariTAC()[n]
                 if hitung < TAC1:
                     TAC1 = hitung
+
             return MOQ[cariTAC().index(TAC1)]
 
         penggunaanharian = round(dataku / int(self.harikerja.get()))
         penggunaanleadtime = round(penggunaanharian * int(self.leadtime.get()))
-        frekuensi = round(dataku / cariEOQ())
-        jarakreorder = round(int(self.harikerja.get()) / frekuensi)
+        frekuensi = round(float(dataku / cariEOQ()))
+        jarakreorder = round(int(self.harikerja.get()) / int(frekuensi))
         rop = round(statistics.mean(peramalan.Penjualan) + penggunaanleadtime)
 
         self.hasil_eoqoptimal["text"] = cariEOQ()
