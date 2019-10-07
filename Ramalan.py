@@ -1,4 +1,3 @@
-
 try:
     from Tkinter import *
     import Tkinter, Tkconstants, tkFileDialog, tkMessageBox
@@ -11,70 +10,74 @@ except ImportError:
 
 import pandas as pd
 import statistics
-import matplotlib
-import IncrementBulan
-matplotlib.use('TkAgg')
-import matplotlib.pyplot as plt
-
-import Peramalan as u
-from Grafik import cetakGrafikRamalan, cetakGrafikPenjualan, cetakListMape
-import TabelPenjualan
-import TabelRamalan
-import TabelMape
-from Vieweoq import main as pindah_eoq
+from reference.Grafik import cetakGrafikRamalan, cetakGrafikPenjualan, cetakListMape
+from reference import TabelRamalan, TabelMape, TabelPenjualan, IncrementBulan, Peramalan as u
+import History
+import LihatData
+import Database
 
 
-class Plot:
-    path = ''
+class Ramalan(Frame):
 
-    def __init__(self, master):
-        self.master = master
-        self.master.title("Wirawan 065113459")
-        # self.master.minsize(450, 280)
-        # self.master.maxsize(500, 280)
+    def __init__(self, parent, controller):
+        Frame.__init__(self, parent)
+        master = Frame(self)
+        master.pack(fill=BOTH, expand=True)
+        menubar = Menu(master)
+        controller.config(menu=menubar)
 
-        self.judul = Label(self.master, text="DOUBLE EXPONENTIAL SMOOTHING", font="Helvetica 16 bold")
+        fileMenu = Menu(menubar)
+        fileMenu.add_command(label="Lihat", command=lambda: controller.show_frame(Ramalan))
+        menubar.add_cascade(label="Import", menu=fileMenu)
+        hisMenu = Menu(menubar)
+        hisMenu.add_command(label="Lihat", command=lambda: controller.show_frame(History.History))
+        menubar.add_cascade(label="History", menu=hisMenu)
+        lhtMenu = Menu(menubar)
+        lhtMenu.add_command(label="Lihat Data", command=lambda: controller.show_frame(LihatData.LhatData))
+        menubar.add_cascade(label="Lihat Data", menu=lhtMenu)
+
+        self.judul = Label(master, text="IMPORT DATA", font="Helvetica 16 bold")
         self.judul.grid(row=0, column=1, columnspan=4, ipady=15)
-        self._separator = ttk.Separator(self.master, orient="horizontal")
-        self._separator.grid(row=1,column=0,columnspan=4, sticky="we")
-        self.label1 = Label(self.master, text="Pilih File: ", anchor=E, justify=RIGHT,pady=10)
-        self.chooseFile = Button(self.master, text="Browse", command=self.pilih_file)
+        self._separator = ttk.Separator(master, orient="horizontal")
+        self._separator.grid(row=1, column=0, columnspan=4, sticky="we")
+        self.label1 = Label(master, text="Pilih File: ", anchor=E, justify=RIGHT, pady=10)
+        self.chooseFile = Button(master, text="Browse", command=self.pilih_file)
         self.label1.grid(row=2, column=1, ipadx=20)
         self.chooseFile.grid(row=2, column=2, ipadx=20)
-        self.txt = Label(self.master, text="*.xlxx", anchor=W)
+        self.txt = Label(master, text="*.xlxx", anchor=W)
         self.txt.grid(row=2, column=3, ipadx=20)
-        self.adaFile = Label(self.master, text="File belum ada")
+        self.adaFile = Label(master, text="File belum ada")
         self.adaFile.grid(row=3, column=1, columnspan=4)
+        self._separator = ttk.Separator(master, orient="horizontal")
+        self._separator.grid(row=4, column=0, columnspan=4, sticky="we")
 
-        self._separator = ttk.Separator(self.master, orient="horizontal")
-        self._separator.grid(row=4,column=0,columnspan=4, sticky="we")
-
-        self.tableSales = Button(self.master, text="Grafik Penjualan", command=self.grafik_penjualan)
+        self.tableSales = Button(master, text="Grafik Penjualan", command=self.grafik_penjualan)
         self.tableSales.grid(row=5, column=1, padx=10, ipadx=10, pady=15)
-        self.tableForecast = Button(self.master, text="Grafik Peramalan", command=self.grafik_ramalan)
+        self.tableForecast = Button(master, text="Grafik Peramalan", command=self.grafik_ramalan)
         self.tableForecast.grid(row=5, column=2, ipadx=10)
-        self.tableMape = Button(self.master, text="Grafik MAPE", command=self.grafik_mape)
+        self.tableMape = Button(master, text="Grafik MAPE", command=self.grafik_mape)
         self.tableMape.grid(row=5, column=3, ipadx=10, padx=10)
 
-        self.lineGraph = Button(self.master, text="Tabel Penjualan", command=self.tabel_penjualan)
+        self.lineGraph = Button(master, text="Tabel Penjualan", command=self.tabel_penjualan)
         self.lineGraph.grid(row=6, column=1, ipadx=10)
-        self.graph_forecast = Button(self.master, text="Tabel Ramalan", command=self.tabel_ramalan)
+        self.graph_forecast = Button(master, text="Tabel Ramalan", command=self.tabel_ramalan)
         self.graph_forecast.grid(row=6, column=2, ipadx=15)
-        self.graph_mape = Button(self.master, text="Tabel MAPE", command=self.tabel_mape)
+        self.graph_mape = Button(master, text="Tabel MAPE", command=self.tabel_mape)
         self.graph_mape.grid(row=6, column=3, ipadx=10, padx=10)
 
-        self.labelAlpha = Label(self.master, text="Alpha Optimal: -", justify=LEFT, anchor=E)
+        self.labelAlpha = Label(master, text="Alpha Optimal: -", justify=LEFT, anchor=E)
         self.labelAlpha.grid(row=7, column=1, pady=10)
-        self.labelMape = Label(self.master, text="Nilai MAPE: -", justify=LEFT, anchor=E)
+        self.labelMape = Label(master, text="Nilai MAPE: -", justify=LEFT, anchor=E)
         self.labelMape.grid(row=7, column=2)
 
-        self.labelData = Label(self.master, text="Data Testing: -", justify=LEFT, anchor=E)
+        self.labelData = Label(master, text="Data Testing: -", justify=LEFT, anchor=E)
         self.labelData.grid(row=8, column=1)
-        self.labelHasil = Label(self.master, text="Hasil Ramalan: -", justify=LEFT, anchor=E)
+        self.labelHasil = Label(master, text="Hasil Ramalan: -", justify=LEFT, anchor=E)
         self.labelHasil.grid(row=8, column=2)
 
-        self.graph_mape = Button(self.master, text="HITUNG EOQ", command=self.tombol_eoq, bg='green')
+        self.graph_mape = Button(master, text="SIMPAN", bg='green', command=lambda: self.simpan_data(controller))
         self.graph_mape.grid(row=8, column=3, pady=10)
+
 
     def pilih_file(self):
         # file_name = tkFileDialog.askopenfilename()
@@ -87,11 +90,12 @@ class Plot:
         self.path = file_name
         self.adaFile["text"] = file_name
         self.labelAlpha["text"] = 'Alpha : ' + str(u.cariMAPE(hasil))
-        self.labelHasil["text"] = str(IncrementBulan.add_months(hasil.Bulan[len(hasil.Bulan) - 1],1)) +" : " + str(round(u.peramalanPertama(hasil, u.cariMAPE(hasil))))
-        self.labelMape["text"] = "MAPE : " + str(round(statistics.mean(u.PE(hasil, u.cariMAPE(hasil))),2))
+        self.labelHasil["text"] = str(
+            IncrementBulan.add_months(hasil.Bulan[len(hasil.Bulan) - 1], 1)) + " : " + str(
+            round(u.peramalanPertama(hasil, u.cariMAPE(hasil))))
+        self.labelMape["text"] = "MAPE : " + str(round(statistics.mean(u.PE(hasil, u.cariMAPE(hasil))), 2))
         self.labelData["text"] = "Data Uji : " + str(len(hasil))
         print(hasil.Harga.dropna())
-
 
     def grafik_penjualan(self):
         if self.adaFile["text"] == "File belum ada":
@@ -138,20 +142,17 @@ class Plot:
             daftarmape = u.daftarMAPE(hasil)
             TabelMape.main(daftarmape)
 
-    def tombol_eoq(self):
+    def simpan_data(self, controller):
         if self.adaFile["text"] == "File belum ada":
             tkMessageBox.showerror("Perhatian", "Harap Masukan Data Anda  !")
         else:
             hasil = pd.read_excel(self.path)
-
-            pindah_eoq(u.peramalanPertama(hasil, u.cariMAPE(hasil)),hasil)
-
-
-def main():
-    root_window = Tk()
-    program = Plot(root_window)
-    root_window.mainloop()
+            Database.POSTBARANG(hasil.Barang[1])
+            for n in range(len(hasil)):
+                Database.POSTPENJUALAN(hasil.Bulan[n], hasil.Penjualan[n], hasil.Barang[n])
+            for n in range(len(hasil.MOQ)):
+                Database.POSTEOQ(hasil.MOQ[n],hasil.Harga[n],hasil.Barang[n])
+            controller.show_frame(History.History)
 
 
-if __name__ == '__main__':
-    main()
+

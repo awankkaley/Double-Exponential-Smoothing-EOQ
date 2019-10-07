@@ -8,10 +8,9 @@ except ImportError:
     from tkinter import *
     import tkinter.ttk as ttk
 
-import pandas as pd
 import math
 import statistics
-import TabelDetailEOQ
+from reference import TabelDetailEOQ
 
 
 class Plot:
@@ -25,7 +24,6 @@ class Plot:
         self.master.title("Economic Order Quantity")
         # self.master.minsize(550, 280)
         # self.master.maxsize(550, 280)
-
         self.judul = Label(self.master, text="ECONOMIC ORDER QUANTITY", font="Helvetica 16 bold")
         self.judul.grid(row=0, column=0, columnspan=4, ipady=15)
 
@@ -114,7 +112,6 @@ class Plot:
         MOQ = peramalan.MOQ.dropna().values.tolist()
         harga = peramalan.Harga.dropna().values.tolist()
         gudang = float(self.gudang.get()) / 100
-
         def eoq_awal():
 
             EOQAWAL = math.sqrt((2 * dataku * int(self.ongkir.get())) / (harga[0] * float(gudang)))
@@ -123,6 +120,7 @@ class Plot:
             for n in range(1, len(MOQ)):
                 hasil.append(MOQ[n])
                 self.dataEOQ.append(MOQ[n])
+
             return hasil
 
         def cariTAC():
@@ -140,7 +138,7 @@ class Plot:
                 hitung = cariTAC()[n]
                 if hitung < TAC1:
                     TAC1 = hitung
-
+            print (MOQ[cariTAC().index(TAC1)])
             return MOQ[cariTAC().index(TAC1)]
 
         penggunaanharian = round(dataku / int(self.harikerja.get()))

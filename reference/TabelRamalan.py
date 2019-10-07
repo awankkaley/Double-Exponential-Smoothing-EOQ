@@ -6,7 +6,8 @@ except ImportError:  # Python 3
     import tkinter as Tkinter
     import tkinter.ttk as ttk
 
-import UbahBulan
+from reference import UbahBulan
+
 
 class TabelPenjualan(Tkinter.Frame):
 
@@ -19,34 +20,37 @@ class TabelPenjualan(Tkinter.Frame):
         self.initialize_user_interface()
 
     def initialize_user_interface(self):
-        self.parent.title("Penjualan")
+        self.parent.title("Ramalan")
         self.parent.config(background="lavender")
 
         # Set the treeview
         self.tree = ttk.Treeview(self.parent,
-                                 columns=('Periode', 'Quantity'))
+                                 columns=('Periode', 'Quantity','Ramalan'))
         self.tree.heading('#0', text='Item')
         self.tree.heading('#1', text='Periode')
         self.tree.heading('#2', text='Quantity')
+        self.tree.heading('#3', text='Ramalan')
         self.tree.column('#1', width = 90)
         self.tree.column('#2', stretch=Tkinter.YES,width = 90,anchor = 'center')
+        self.tree.column('#3', stretch=Tkinter.YES,width = 90,anchor = 'center')
         self.tree.column('#0', stretch=Tkinter.YES,width = 50)
         self.tree.grid(row=4, columnspan=4, sticky='nsew')
         self.treeview = self.tree
         # Initialize the counter
         self.i = 1
 
-    def insert_data(self,data):
+    def insert_data(self,data,ft):
         for n in range(0, len(data)):
             self.treeview.insert('', 'end', text=str(self.i),
                                  values=(UbahBulan.ubah(str(data.Bulan[n])),
-                                         data.Penjualan[n]))
+                                         data.Penjualan[n], round(ft[n],3)))
             # Increment counter
             self.i = self.i + 1
 
-def main(data):
+
+def main(data,ft):
     root = Tkinter.Tk()
     d = TabelPenjualan(root)
-    d.insert_data(data)
+    d.insert_data(data,ft)
     root.mainloop()
 

@@ -1,4 +1,5 @@
 
+
 try:
     from Tkinter import *
     import Tkinter, Tkconstants, tkFileDialog, tkMessageBox
@@ -9,63 +10,44 @@ except ImportError:
     from tkinter import *
     import tkinter.ttk as ttk
 
-import pandas as pd
-import matplotlib
-matplotlib.use('TkAgg')
-import View
+from Ramalan import Ramalan
+from History import History
+from LihatData import LhatData
+LARGE_FONT = ("Verdana", 12)
 
 
+class Utama(Tk):
 
-class Plot:
-    path = ''
+    def __init__(self, *args, **kwargs):
+        Tk.__init__(self, *args, **kwargs)
+        container = Frame(self)
 
-    def __init__(self, master):
-        self.master = master
-        self.master.title("Wirawan 065113459")
+        container.pack(side="top", fill="both", expand=True)
 
+        container.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=1)
 
-        self.judul = Label(self.master, text="DOUBLE EXPONENTIAL SMOOTHING", font="Helvetica 16 bold")
-        self.judul.grid(row=0, column=1, columnspan=4, ipady=15)
-        self._separator = ttk.Separator(self.master, orient="horizontal")
-        self._separator.grid(row=1,column=0,columnspan=4, sticky="we")
-        self.label1 = Label(self.master, text="Pilih Data: ", anchor=E, justify=RIGHT,pady=10)
-        self.chooseFile = Button(self.master, text="Browse", command=self.pilih_file)
-        self.label1.grid(row=2, column=1, ipadx=20)
-        self.chooseFile.grid(row=2, column=2, ipadx=20)
+        self.frames = {}
 
-        self._separator = ttk.Separator(self.master, orient="horizontal")
-        self._separator.grid(row=4,column=0,columnspan=4, sticky="we")
+        for F in (Ramalan,History,LhatData):
+            frame = F(container, self)
 
-        self.tableSales = Button(self.master, text="GO !", command=self.grafik_penjualan)
-        self.tableSales.grid(row=5, column=1, columnspan=4,padx=10, ipadx=10, pady=15)
+            self.frames[F] = frame
 
+            frame.grid(row=0, column=0, sticky="nsew")
 
-    def pilih_file(self):
-        # file_name = tkFileDialog.askopenfilename()
-        file_name = tkFileDialog.askopenfilename()
-        if not file_name:
-            return
-        hasil = pd.read_excel(file_name)
-        if len(hasil.Penjualan) < 6:
-            tkMessageBox.showerror('Peringatan', 'Data Tidak Mencukupi !')
-        self.path = file_name
-        self.adaFile["text"] = file_name
+        self.show_frame(Ramalan)
 
-
-
-    def grafik_penjualan(self):
-        View.main()
-        View.Tk.destroy()
+    def show_frame(self, cont):
+        frame = self.frames[cont]
+        frame.update()
+        frame.tkraise()
 
 
 
 
-def main():
-    root_window = Tk()
-    program = Plot(root_window)
-    root_window.mainloop()
 
 
 
-if __name__ == '__main__':
-    main()
+app = Utama()
+app.mainloop()
