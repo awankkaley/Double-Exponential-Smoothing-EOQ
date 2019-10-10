@@ -8,7 +8,6 @@ except ImportError:
     from tkinter import *
     import tkinter.ttk as ttk
 
-
 import History
 import Ramalan
 import Database
@@ -37,20 +36,19 @@ class LhatData(Frame):
         self.judul.pack(fill=X, ipady=15)
         self._separator = ttk.Separator(master, orient="horizontal")
         self._separator.pack(fill=X)
-        data = Database.GETBARANG()
-
-        for n in range(len(data.Nama)):
-            row = data.Nama[n]
+        data = Database.GETLISTDATA().Tables_in_penjualan
+        for n in range(len(data)):
+            row = data[n]
             self.frame1 = Frame(master)
-            self.frame1.pack(fill=X,anchor="c")
-            self.data1 = Label(self.frame1, text=row,width="15")
-            self.data1.pack( side=LEFT)
+            self.frame1.pack(fill=X, anchor="c")
+            self.data1 = Label(self.frame1, text=row, width="15")
+            self.data1.pack(side=LEFT)
 
-            self.penjualan1 = Button(self.frame1, text="Hapus", width="10", command=lambda: self.tabel_penjualan(row))
-            self.penjualan1.pack( side=LEFT)
+            self.hapus1 = Button(self.frame1, text="Hapus", width="10", command=lambda: self.hapus(row))
+            self.hapus1.pack(side=LEFT)
 
+    def hapus(self, data):
+        Database.HAPUSDATA(data)
+        self.master.update_idletasks()
+        self.master.update()
 
-
-    def tabel_penjualan(self,data):
-        print (data)
-        # print (data

@@ -1,71 +1,34 @@
 import requests
 import json
 import pandas as pd
+from sqlalchemy import create_engine
+import pymysql
+import datetime
 
-headers = {
-    'content-type': "application/json",
-    'x-apikey': "6cb2f59932784a801a4ff10e2a4f15b89c287",
-    'cache-control': "no-cache"
-}
-
-
-def POSTPENJUALAN(bulan, penjualan, barang):
-    url = "https://skripsiku-e093.restdb.io/rest/penjualan"
-    payload = json.dumps({"Bulan": str(bulan), "Penjualan": penjualan, "Barang": barang})
-    response = requests.request("POST", url, data=payload, headers=headers)
-    print(response.text)
+sqlEngine = create_engine('mysql+pymysql://root:@127.0.0.1/penjualan', pool_recycle=3600)
+connection = pymysql.connect('localhost', 'root',
+                             '', 'penjualan')
+dbConnection = sqlEngine.connect()
 
 
-def POSTEOQ(moq, harga, barang):
-    url = "https://skripsiku-e093.restdb.io/rest/eoqq"
-    payload = json.dumps({"MOQ": moq, "Harga": harga, "Barang": barang})
-    response = requests.request("POST", url, data=payload, headers=headers)
-    print(response.text)
+def POSTDATA(path, nama):
+    test = pd.read_excel(path)
+    test.to_sql(name=nama, con=dbConnection, if_exists='append')
 
 
-def POSTBARANG(barang):
-    url = "https://skripsiku-e093.restdb.io/rest/barang"
-    payload = json.dumps({"Nama": barang})
-    response = requests.request("POST", url, data=payload, headers=headers)
-    print(response.text)
-
-
-def GETBARANG():
-    url = "https://skripsiku-e093.restdb.io/rest/barang"
-    response = requests.request("GET", url, headers=headers)
-    data = response.json()
-    nama = [item['Nama'] for item in data]
-
-    df = pd.DataFrame(
-        {'Nama': nama,
-         })
+def GETLISTDATA():
+    df = pd.read_sql("SHOW TABLES", con=dbConnection, )
     return df
 
 
-def GETPENJUALAN(nama):
-    url = "https://skripsiku-e093.restdb.io/rest/penjualan"
-    response = requests.request("GET", url, headers=headers)
-    data = response.json()
-    bulan = [item['Bulan'] for item in data]
-    penjualan = [item['Penjualan'] for item in data]
-    barang = [item['Barang'] for item in data]
+def GETDATA(nama):
+    df = pd.read_sql("select * from " + nama, con=dbConnection, )
+    return df
 
-    df = pd.DataFrame(
-        {'Bulan': bulan, 'Penjualan': penjualan,'Barang':barang})
-    data = df.loc[df['Barang'] == nama]
-    return data
 
-def GETMOQ(nama):
-    url = "https://skripsiku-e093.restdb.io/rest/eoqq"
-    response = requests.request("GET", url, headers=headers)
-    data = response.json()
-    moq = [item['MOQ'] for item in data]
-    harga = [item['Harga'] for item in data]
-    barang = [item['Barang'] for item in data]
+def HAPUSDATA(nama):
+    cursor = connection.cursor()
+    sql = "DROP TABLE IF EXISTS {}".format(nama)
+    cursor.execute(sql)
 
-    df = pd.DataFrame(
-        {'MOQ': moq, 'Harga': harga, 'Barang': barang})
-    data = df.loc[df['Barang'] == nama]
-    return data
-
-# print (GETMOQ("YRS23"))
+# HAPUSDATA("yrs23")

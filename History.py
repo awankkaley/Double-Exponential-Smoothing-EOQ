@@ -35,9 +35,9 @@ class History(Frame):
         lhtMenu.add_command(label="Lihat Data", command=lambda: controller.show_frame(LihatData.LhatData))
         menubar.add_cascade(label="Lihat Data", menu=lhtMenu)
         tkvar = StringVar(self)
-        if len(Database.GETBARANG().Nama)!= 0:
+        if len(Database.GETLISTDATA().Tables_in_penjualan)!= 0:
 
-            choices = Database.GETBARANG().Nama
+            choices = Database.GETLISTDATA().Tables_in_penjualan
             tkvar.set("Pilih Data")  # set the default option
             popupMenu = OptionMenu(master, tkvar, *choices)
             popupMenu.grid(row=2, column=2, ipadx=20)
@@ -92,7 +92,7 @@ class History(Frame):
     def pilih_file(self,file_name):
         if not file_name:
             return
-        hasil = Database.GETPENJUALAN(file_name)
+        hasil = Database.GETDATA(file_name)
         if len(hasil.Penjualan) < 6:
             tkMessageBox.showerror('Peringatan', 'Data Tidak Mencukupi !')
         self.path = file_name
@@ -108,14 +108,14 @@ class History(Frame):
         if self.adaFile["text"] == "File belum ada":
             tkMessageBox.showerror("Perhatian", "Harap Masukan Data Anda  !")
         else:
-            hasil = Database.GETPENJUALAN(self.path)
+            hasil = Database.GETDATA(self.path)
             cetakGrafikPenjualan(hasil.Bulan, hasil.Penjualan)
 
     def grafik_ramalan(self):
         if self.adaFile["text"] == "File belum ada":
             tkMessageBox.showerror("Perhatian", "Harap Masukan Data Anda  !")
         else:
-            hasil = Database.GETPENJUALAN(self.path)
+            hasil = Database.GETDATA(self.path)
             ramalan = u.peramalan(hasil, u.cariMAPE(hasil))
             cetakGrafikRamalan(hasil.Bulan, hasil.Penjualan, ramalan)
 
@@ -123,21 +123,21 @@ class History(Frame):
         if self.adaFile["text"] == "File belum ada":
             tkMessageBox.showerror("Perhatian", "Harap Masukan Data Anda  !")
         else:
-            hasil = Database.GETPENJUALAN(self.path)
+            hasil = Database.GETDATA(self.path)
             cetakListMape(u.daftarMAPE(hasil).Hasil, u.daftarMAPE(hasil).Alpha)
 
     def tabel_penjualan(self):
         if self.adaFile["text"] == "File belum ada":
             tkMessageBox.showerror("Perhatian", "Harap Masukan Data Anda  !")
         else:
-            hasil = Database.GETPENJUALAN(self.path)
+            hasil = Database.GETDATA(self.path)
             TabelPenjualan.main(hasil)
 
     def tabel_ramalan(self):
         if self.adaFile["text"] == "File belum ada":
             tkMessageBox.showerror("Perhatian", "Harap Masukan Data Anda  !")
         else:
-            hasil = Database.GETPENJUALAN(self.path)
+            hasil = Database.GETDATA(self.path)
             ramalan = u.peramalan(hasil, u.cariMAPE(hasil))
             TabelRamalan.main(hasil, ramalan)
 
@@ -145,7 +145,7 @@ class History(Frame):
         if self.adaFile["text"] == "File belum ada":
             tkMessageBox.showerror("Perhatian", "Harap Masukan Data Anda  !")
         else:
-            hasil = Database.GETPENJUALAN(self.path)
+            hasil = Database.GETDATA(self.path)
             daftarmape = u.daftarMAPE(hasil)
             TabelMape.main(daftarmape)
 
@@ -153,8 +153,6 @@ class History(Frame):
         if self.adaFile["text"] == "File belum ada":
             tkMessageBox.showerror("Perhatian", "Harap Masukan Data Anda  !")
         else:
-            hasil = Database.GETPENJUALAN(self.path)
-            eoq = Database.GETMOQ(self.path)
-
-            pindah_eoq(u.peramalanPertama(hasil, u.cariMAPE(hasil)), eoq)
+            hasil = Database.GETDATA(self.path)
+            pindah_eoq(u.peramalanPertama(hasil, u.cariMAPE(hasil)), hasil)
 

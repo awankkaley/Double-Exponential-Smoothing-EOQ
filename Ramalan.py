@@ -146,11 +146,7 @@ class Ramalan(Frame):
             tkMessageBox.showerror("Perhatian", "Harap Masukan Data Anda  !")
         else:
             hasil = pd.read_excel(self.path)
-            Database.POSTBARANG(hasil.Barang[1])
-            for n in range(len(hasil)):
-                Database.POSTPENJUALAN(hasil.Bulan[n], hasil.Penjualan[n], hasil.Barang[n])
-            for n in range(len(hasil.MOQ)):
-                Database.POSTEOQ(hasil.MOQ[n],hasil.Harga[n],hasil.Barang[n])
+            Database.POSTDATA(self.path, hasil.Barang[1])
             controller.show_frame(History.History)
 
 
