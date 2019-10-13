@@ -31,7 +31,7 @@ class Utama(Tk):
         self.menubar.add_cascade(label="History", menu=self.hisMenu)
         self.lhtMenu = Menu(self.menubar)
         self.lhtMenu.add_command(label="Lihat Data", command=lambda: self.show_frame(LhatData, container))
-        self.menubar.add_cascade(label="Lihat Data", menu=self.lhtMenu)
+        self.menubar.add_cascade(label="Data", menu=self.lhtMenu)
         self.exit = Menu(self.menubar)
         self.exit.add_command(label="Keluar", command=lambda: self.quit())
         self.menubar.add_cascade(label="Keluar", menu=self.exit)
@@ -56,7 +56,6 @@ class Utama(Tk):
             self.frames[F] = frame
 
             frame.grid(row=0, column=0, sticky="nsew")
-
 
 
 app = Utama()
