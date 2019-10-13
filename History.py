@@ -13,8 +13,6 @@ import statistics
 from reference.Grafik import cetakGrafikRamalan, cetakGrafikPenjualan, cetakListMape
 from reference import TabelRamalan, TabelMape, TabelPenjualan, IncrementBulan, Peramalan as u
 from Optimasi import main as pindah_eoq
-import Ramalan
-import LihatData
 import Database
 class History(Frame):
 
@@ -22,18 +20,7 @@ class History(Frame):
         Frame.__init__(self, parent)
         master = Frame(self)
         master.pack(fill=BOTH, expand=True)
-        menubar = Menu(master)
-        controller.config(menu=menubar)
 
-        fileMenu = Menu(menubar)
-        fileMenu.add_command(label="Import", command=lambda: controller.show_frame(Ramalan.Ramalan))
-        menubar.add_cascade(label="Import", menu=fileMenu)
-        hisMenu = Menu(menubar)
-        hisMenu.add_command(label="History", command=lambda: controller.show_frame(History))
-        menubar.add_cascade(label="History", menu=hisMenu)
-        lhtMenu = Menu(menubar)
-        lhtMenu.add_command(label="Lihat Data", command=lambda: controller.show_frame(LihatData.LhatData))
-        menubar.add_cascade(label="Lihat Data", menu=lhtMenu)
         tkvar = StringVar(self)
         if len(Database.GETLISTDATA().Tables_in_penjualan)!= 0:
 
