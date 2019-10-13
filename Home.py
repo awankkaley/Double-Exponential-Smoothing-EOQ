@@ -1,5 +1,3 @@
-
-
 try:
     from Tkinter import *
     import Tkinter, Tkconstants, tkFileDialog, tkMessageBox
@@ -29,7 +27,7 @@ class Utama(Tk):
 
         self.frames = {}
 
-        for F in (Ramalan,History,LhatData):
+        for F in (Ramalan, History, LhatData):
             frame = F(container, self)
 
             self.frames[F] = frame
@@ -40,13 +38,7 @@ class Utama(Tk):
 
     def show_frame(self, cont):
         frame = self.frames[cont]
-        frame.update()
         frame.tkraise()
-
-
-
-
-
 
 
 app = Utama()

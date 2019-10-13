@@ -19,9 +19,8 @@ class LhatData(Frame):
         Frame.__init__(self, parent)
         master = Frame(self)
         master.pack(fill=BOTH, expand=True)
-        menubar = Menu(master)
+        menubar = Menu(self)
         controller.config(menu=menubar)
-
         fileMenu = Menu(menubar)
         fileMenu.add_command(label="Lihat", command=lambda: controller.show_frame(Ramalan.Ramalan))
         menubar.add_cascade(label="Import", menu=fileMenu)
@@ -43,12 +42,11 @@ class LhatData(Frame):
             self.frame1.pack(fill=X, anchor="c")
             self.data1 = Label(self.frame1, text=row, width="15")
             self.data1.pack(side=LEFT)
-
             self.hapus1 = Button(self.frame1, text="Hapus", width="10", command=lambda: self.hapus(row))
             self.hapus1.pack(side=LEFT)
 
     def hapus(self, data):
         Database.HAPUSDATA(data)
-        self.master.update_idletasks()
-        self.master.update()
+
+
 
